@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis on IMDB Movie Review Dataset</title>
+    <style>
+        body{
+            background-color: powderblue;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h3>Sentiment Analysis || Based on IMDB Movie Review Dataset</h3>
+        <br>
+        <label for="Review Label"><h4>Enter Your Movie Review ::</h4></label>
+        <textarea name="review" id="review" cols="100" rows="15"></textarea><br><br>    
+        <button onclick="getSentiments();">Get Sentiment Analysis</button>
+        <br><br>
+        <h2><span style="color: green;" id="Positive"></span></h2>
+        <span style="color: red;" id="negative"></span>
+    </center>
+    <script>
+        function getSentiments(){
+            var review=document.getElementById("review").value;
+            fetch('http://127.0.0.1:5000/rest/data/',{
+                method: 'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body: JSON.stringify(review)
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                console.log(data['data']);
+                document.getElementById("Positive").innerText=data['data'];
+            })
+            .catch(error=>{
+                console.error("Error..",error);
+            });
+        }
+    </script>
+</body>
+</html>
